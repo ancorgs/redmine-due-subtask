@@ -20,7 +20,7 @@ module DueSubtaskIssuePatch
   module InstanceMethods
     def safe_attributes_with_due_subtask=(attrs, user=User.current)
       if attr_id = IssueCustomField.where(:name => "Due subtask").pluck(:id).first
-        if attrs['custom_field_values'] && attrs['custom_field_values'].kind_of?(Hash)
+        if attrs.respond_to?(:"[]") && attrs['custom_field_values'] && attrs['custom_field_values'].kind_of?(Hash)
           attrs['custom_field_values'].delete(attr_id.to_s)
         end
       end
