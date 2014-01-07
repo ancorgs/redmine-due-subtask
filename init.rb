@@ -1,8 +1,15 @@
 require 'redmine'
+require 'due_subtask_helper_patch'
 
 Rails.configuration.to_prepare do
   unless Issue.included_modules.include?(DueSubtaskIssuePatch)
       Issue.send(:include, DueSubtaskIssuePatch)
+  end
+
+  # To patch a redmine bug with date custom fields
+  require_dependency 'custom_fields_helper'
+  unless CustomFieldsHelper.included_modules.include?(DueSubtaskCustomFieldsHelperPatch)
+    CustomFieldsHelper.send(:include, DueSubtaskCustomFieldsHelperPatch)
   end
 end
 
